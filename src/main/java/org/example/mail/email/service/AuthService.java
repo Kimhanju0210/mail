@@ -23,17 +23,17 @@ import java.util.Random;
 public class AuthService {
 
     private final UserRepository userRepository;
-
     private final RedisTool redisTool;
-
     private final EmailTool emailTool;
+
     private static final String AUTH_CODE = "AUTH_CODE";
 
     @Value("${spring.mail.auth-code-expiration-millis}")
     private long authCodeExpirationMillis;
 
     public void sendEmail(String toEmail) {
-        if(userRepository.existsByEmail(toEmail)) throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
+        if(userRepository.existsByEmail(toEmail))
+            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
 
         String title = "유저 이메일 인증 번호";
         String authCode = this.createCode();
