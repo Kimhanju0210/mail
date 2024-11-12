@@ -16,5 +16,25 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @PostMapping
+    public ResponseEntity<?> sendCode(
+            @Schema(description = "인증번호를 보낼 email 주소", example = "example@example.com")
+            @RequestParam("email")
+            String email) {
+        authService.sendEmail(email);  // 인스턴스 메서드 호출
+        return ResponseEntity.ok().body("발송완료");
+    }
+
+
+    @GetMapping
+    public ResponseEntity<?> verifyCode(
+            @Schema(description = "인증번호를 보낸 email 주소", example = "example@example.com")
+            @RequestParam("email")
+            String email,
+            @Schema(description = "받은 인증번호", example = "123456")
+            @RequestParam("code")
+            String code) {
+        return ResponseEntity.ok().body(authService.authCode(email, code));
+    }
 
 }
